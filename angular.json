@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "kalman-filter-explirative": {
+    "kalman-filter-explorative": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/kalman-filter-explirative",
+            "outputPath": "dist/kalman-filter-explorative",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "kalman-filter-explirative:build:production"
+              "browserTarget": "kalman-filter-explorative:build:production"
             },
             "development": {
-              "browserTarget": "kalman-filter-explirative:build:development"
+              "browserTarget": "kalman-filter-explorative:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "kalman-filter-explirative:build"
+            "browserTarget": "kalman-filter-explorative:build"
           }
         },
         "test": {
@@ -107,5 +107,5 @@
       }
     }
   },
-  "defaultProject": "kalman-filter-explirative"
+  "defaultProject": "kalman-filter-explorative"
 }

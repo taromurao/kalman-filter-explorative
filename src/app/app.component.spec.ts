@@ -16,16 +16,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'kalman-filter-explirative'`, () => {
+  it(`should have as title 'kalman-filter-explorative'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('kalman-filter-explirative');
+    expect(app.title).toEqual('kalman-filter-explorative');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('kalman-filter-explirative app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('kalman-filter-explorative app is running!');
   });
 });
