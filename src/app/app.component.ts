@@ -26,6 +26,7 @@ const rssisTake3 = [
   <plotly-plot [data]="graphTake1.data" [layout]="graphTake1.layout"></plotly-plot>
   <plotly-plot [data]="graphTake2.data" [layout]="graphTake2.layout"></plotly-plot>
   <plotly-plot [data]="graphTake3.data" [layout]="graphTake3.layout"></plotly-plot>
+  <plotly-plot [data]="rssiDistanceGraph.data" [layout]="rssiDistanceGraph.layout"></plotly-plot>
   `,
   styleUrls: ['./app.component.less']
 })
@@ -33,6 +34,7 @@ export class AppComponent {
   graphTake1 = getGraph(rssisTake1, 'Kalman filter on RSSI, Take 1');
   graphTake2 = getGraph(rssisTake2, 'Kalman filter on RSSI, Take 2');
   graphTake3 = getGraph(rssisTake3, 'Kalman filter on RSSI, Take 3');
+  rssiDistanceGraph = getRssiDistGraph();
 }
 
 
@@ -52,7 +54,7 @@ function getGraph(rssis: ReadonlyArray<number>, graphTitle: string) {
 
   return {
     data: [
-      { y: rssis, mode: 'markers' },
+      { y: rssis, mode: 'markers', type: 'scatter' },
       { y: filtered },
       // { y: estimates },
     ],
@@ -60,10 +62,56 @@ function getGraph(rssis: ReadonlyArray<number>, graphTitle: string) {
   }
 }
 
-// function getDistance(rssi: number): number {
-//   const diff = TX_POWER - rssi;
-//   return diff <= 0 ?
-//     1 : Math.sqrt(diff) + 1;
-// }
+function range(start: number, stop: number, step: number = 1, circularFill = false, map = (value: number) => value) {
+  if (typeof stop === 'undefined') {
+    stop = start;
+    start = 0;
+  }
 
-// const estimates = filtered.map(getDistance);
+  if (step > 0 && start >= stop) {
+    step = -step;
+  }
+
+  if (step < 0 && start <= stop) {
+    return [];
+  }
+
+  let index = start;
+  const result = [];
+
+  if (circularFill) {
+    const size = start + stop;
+    for (index; step > 0 ? index < size : index > size; index += step) {
+      result.push(map(index % stop));
+    }
+    return result;
+  }
+
+  for (index; step > 0 ? index < stop : index > stop; index += step) {
+    result.push(map(index));
+  }
+
+  return result;
+}
+
+function getRssiDistGraph() {
+  const rssis = [
+    -93, -80, -96, -83, -82, -91, -75, -75, -87, -71, -65, -90, -70, -95, -72, -80, -71, -83, -81, -78, -73, -62, -68, -72, -74, -69, -79, -88, -67, -72, -74, -67, -59, -60, -67, -60, -67, -58, -63, -67, -59, -74, -72, -58, -61, -60, -54, -59, -55, -55, -70, -73, -64, -58, -55, -78, -70, -70, -58, -61, -65, -52, -48, -58, -51, -56, -55, -39, -55,
+  ];
+  const linearDistances = range(6, 0.5, -0.08);
+  const sorted = rssis.sort().reverse();
+  return {
+    data: [
+      { x: rssis, y: linearDistances, mode: 'markers', type: 'scatter' },
+      { x: rssis, y: rssis.map(getDistance) },
+    ],
+    layout: { width: 1000, height: 500, title: 'RSSI x distance' }
+  }
+}
+
+
+function getDistance(rssi: number): number {
+  const diff = -50 - rssi;
+  const d = 0.3 * Math.pow(diff, 7 / 9) + 0.4
+  return diff <= 0 ? 1 : d;
+}
