@@ -1,3 +1,5 @@
 ## Adjusting parameters of KalmanFilter constructor
 
 RSSI data sample points were collected from three "simulations" of searching for a bluetooth beacon. At each take, I started at around 6 m distance from teh beacson and stopped at 4m, 3m and 1m distances from the beacon.
+
+From three takes, I found that on average 1.44 scans/s were conducted. From this assuming that a step to be one second, I set timeStep parameter to be 0.7. Similarly, the three takes started from -90 RSSI and ended at around -50 RSSI within 3- to 40 seconds. From this I would set the average speed value to be (-50 - (-90)) / (35 * 2) \approx 0.57 RSSI. Note that there is the multiplication factor of 2 for the time assuming that it would take a person to require double so much time to discover the searched item. With these assumptions, variance value of 0.02 for both position and speed would be completely wrong I assume.
